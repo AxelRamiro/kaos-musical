@@ -1,1 +1,3 @@
 *.mid
+src/Almacenamiento/ConectorBD.java
+OpusKDD/src/ObjeAux/conectar.java

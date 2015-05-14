@@ -778,6 +778,9 @@ public class guiRecomendarKM extends javax.swing.JFrame implements ObjeAux.Actio
         
         /***Envío de opus***/
         OpusPrimaria[] o = {opusKMCH, opusKMDB, opusXMCH, opusXMDB, opusEMCH, opusEMDB};
+        for(OpusPrimaria op : o) {
+            System.out.println(op);
+        }
         GuiEvent evt = new GuiEvent(this, OPUS);
         evt.addParameter(o);
         Agnt.postGuiEvent(evt);

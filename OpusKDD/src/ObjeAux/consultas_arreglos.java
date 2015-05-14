@@ -35,7 +35,7 @@ public class consultas_arreglos {
                     + "FROM parametrosmusicales, evaluacion, instrumentos "
                     + "WHERE parametrosmusicales.idopusprimaria = evaluacion.idopusprimaria "
                     + "AND parametrosmusicales.instrumento = instrumentos.nombre "
-                    + "AND evaluacion.laEmocion = ' + " + emocion + "' "
+                    + "AND evaluacion.laEmocion = '" + emocion + "' "
                     + "GROUP BY clase "
                     + "ORDER BY total desc");
             if (res.next()) {
@@ -92,6 +92,7 @@ public class consultas_arreglos {
     }
 
     public String getBestInst(String emocion) {
+        System.out.println("Clase " + getClassCount(emocion) + " para " + emocion);
         try {
             conectar = con.recibeConexion();
             Statement s = conectar.createStatement();

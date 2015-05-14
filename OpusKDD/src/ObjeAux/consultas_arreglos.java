@@ -27,6 +27,26 @@ public class consultas_arreglos {
         return filaEvaluacion;
     }
 
+    public int getClassCount(String emocion) {
+        try {
+            conectar = con.recibeConexion();
+            Statement s = conectar.createStatement();
+            res = s.executeQuery("SELECT clase, COUNT(instrumento) as total "
+                    + "FROM parametrosmusicales, evaluacion, instrumentos "
+                    + "WHERE parametrosmusicales.idopusprimaria = evaluacion.idopusprimaria "
+                    + "AND parametrosmusicales.instrumento = instrumentos.nombre "
+                    + "AND evaluacion.laEmocion = ' + " + emocion + "' "
+                    + "GROUP BY clase "
+                    + "ORDER BY total desc");
+            if (res.next()) {
+                return (res.getInt("clase"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error en la obtención de mejor clase");
+        }
+        return 0;
+    }
+
     public ArrayList<String> getScaleCount(String emocion) {
         ArrayList<String> filaEvaluacion = new ArrayList<String>();
         try {
@@ -48,7 +68,7 @@ public class consultas_arreglos {
         }
         return filaEvaluacion;
     }
-    
+
     public ArrayList<String> getChordCount(String emocion) {
         ArrayList<String> filaEvaluacion = new ArrayList<String>();
         try {
@@ -70,16 +90,34 @@ public class consultas_arreglos {
         }
         return filaEvaluacion;
     }
-    
-    public String getBestInst(String emocion){
+
+    public String getBestInst(String emocion) {
+        try {
+            conectar = con.recibeConexion();
+            Statement s = conectar.createStatement();
+            res = s.executeQuery("SELECT instrumento, COUNT(instrumento) as total "
+                    + "FROM parametrosmusicales, evaluacion, instrumentos "
+                    + "WHERE parametrosmusicales.idopusprimaria = evaluacion.idopusprimaria "
+                    + "AND parametrosmusicales.instrumento = instrumentos.nombre "
+                    + "AND clase = " + getClassCount(emocion) +" "
+                    + "AND evaluacion.laEmocion = '" + emocion +"' "
+                    + "GROUP BY instrumento "
+                    + "ORDER BY total desc "
+                    + "LIMIT 1");
+            if (res.next()) {
+                return (res.getString("instrumento"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error en la obtención de mejor clase");
+        }
         return getInstCount(emocion).get(0);
     }
-    
-    public String getBestScale(String emocion){
+
+    public String getBestScale(String emocion) {
         return getScaleCount(emocion).get(0);
     }
-    
-    public String getBestChord(String emocion){
+
+    public String getBestChord(String emocion) {
         return getChordCount(emocion).get(0);
     }
 
